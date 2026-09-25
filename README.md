@@ -416,7 +416,7 @@ The 38 API tests cover registration and validation, login and logout, protected 
 
 ## 👤 Author
 
-**Your Name** · [GitHub](https://github.com/your-username) · [LinkedIn](https://linkedin.com/in/your-profile)
+**Semal fatima** · [GitHub](https://github.com/semal-ftm) · [LinkedIn](https://linkedin.com/in/Semal Fatima)
 
 ## 🎓 Internship project note
 
