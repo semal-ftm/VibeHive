@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Django
+backend/db.sqlite3
+backend/media/
+backend/staticfiles/
+*.log
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local environment
+.env
+
+# Mobile app (Capacitor)
+mobile/node_modules/
+mobile/www/
+mobile/android/app/build/
+mobile/android/.gradle/
+mobile/android/build/
+mobile/android/local.properties
+mobile/android/app/src/main/assets/public/
+*.apk
+*.aab
+*.keystore
+*.jks
+
+
+update.zip

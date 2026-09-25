@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">VibeHive</string>
+    <string name="title_activity_main">VibeHive</string>
+    <string name="package_name">com.vibehive.app</string>
+    <string name="custom_url_scheme">com.vibehive.app</string>
+</resources>

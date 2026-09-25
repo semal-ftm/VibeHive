@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <title>Chat · VibeHive</title>
+  <meta name="description" content="A private chat on VibeHive.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <!-- Installable app (PWA) -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#F7F4EE" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121016" media="(prefers-color-scheme: dark)">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="VibeHive">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css?v=10">
+  <script src="js/theme-boot.js?v=10"></script>
+</head>
+<body class="app chat-page">
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main" id="main">
+      <section class="card chat-shell" id="chat-shell">
+        <header class="chat-head">
+          <a class="btn-icon" href="messages.html" aria-label="Back to messages">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+          </a>
+          <a class="chat-person" id="chat-person" href="#"></a>
+        </header>
+        <div class="chat-scroll" id="chat-scroll">
+          <div class="chat-older" id="chat-older"></div>
+          <div class="chat-messages" id="chat-messages" aria-live="polite"></div>
+          <div class="typing-bubble" id="typing-bubble" hidden><span></span><span></span><span></span></div>
+        </div>
+        <div id="chat-composer-slot"></div>
+      </section>
+    </main>
+
+    <aside class="rightbar" id="rightbar"></aside>
+  </div>
+
+  <script src="js/config.js?v=10"></script>
+  <script src="js/api.js?v=10"></script>
+  <script src="js/app.js?v=10"></script>
+  <script src="js/vibes.js?v=10"></script>
+  <script src="js/chat.js?v=10"></script>
+  <script src="js/pwa.js?v=10"></script>
+</body>
+</html>

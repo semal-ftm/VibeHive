@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Profile · VibeHive</title>
+  <meta name="description" content="VibeHive — Share the vibe. Join the hive.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <!-- Installable app (PWA) -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#F7F4EE" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121016" media="(prefers-color-scheme: dark)">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="VibeHive">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css?v=10">
+  <script src="js/theme-boot.js?v=10"></script>
+</head>
+<body class="app">
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main" id="main">
+      <div id="profile-card">
+        <!-- skeleton until the profile loads -->
+        <div class="card profile-card">
+          <div class="profile-cover"></div>
+          <div class="profile-body">
+            <div class="profile-top"><span class="skeleton" style="width:112px;height:112px;border-radius:50%"></span></div>
+            <div class="skeleton sk-line" style="width:40%;height:20px;margin-top:16px"></div>
+            <div class="skeleton sk-line" style="width:25%"></div>
+            <div class="skeleton sk-line" style="width:80%;margin-top:16px"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VibeHive signature features -->
+      <div id="vibe-match"></div>
+      <div id="vibe-calendar"></div>
+
+      <div class="tabs hidden" role="tablist" aria-label="Profile sections" id="profile-tabs">
+        <button class="tab active" type="button" role="tab" data-tab="posts">Posts</button>
+        <button class="tab" type="button" role="tab" data-tab="followers">Followers</button>
+        <button class="tab" type="button" role="tab" data-tab="following">Following</button>
+      </div>
+
+      <div id="profile-content"></div>
+    </main>
+
+    <aside class="rightbar" id="rightbar"></aside>
+  </div>
+
+  <script src="js/config.js?v=10"></script>
+  <script src="js/api.js?v=10"></script>
+  <script src="js/app.js?v=10"></script>
+  <script src="js/vibes.js?v=10"></script>
+  <script src="js/posts.js?v=10"></script>
+  <script src="js/profile.js?v=10"></script>
+  <script src="js/pwa.js?v=10"></script>
+</body>
+</html>

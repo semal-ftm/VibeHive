@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Log in · VibeHive</title>
+  <meta name="description" content="Log in to VibeHive — Share the vibe. Join the hive.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <!-- Installable app (PWA) -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#F7F4EE" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121016" media="(prefers-color-scheme: dark)">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="VibeHive">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css?v=10">
+  <script src="js/theme-boot.js?v=10"></script>
+</head>
+<body>
+  <div class="auth-page">
+    <!-- Brand panel (hidden on mobile) -->
+    <section class="auth-brand" aria-hidden="true">
+      <a class="brand" href="login.html" data-logo tabindex="-1"><span class="brand-name">Vibe<span>Hive</span></span></a>
+      <div>
+        <div class="auth-headline">
+          <h1>Share the vibe.<br><em>Join the hive.</em></h1>
+          <p>Post what's on your mind, tag it with a vibe, and find the people who feel the same buzz.</p>
+        </div>
+        <!-- Animated demo: typing → picking a vibe → posting (js/auth-showcase.js) -->
+        <div class="showcase" data-showcase></div>
+      </div>
+      <div class="auth-points"><span>😊 Vibe tags</span><span>❤️ Likes &amp; comments</span><span>🐝 Follow your people</span></div>
+    </section>
+
+    <!-- Form -->
+    <section class="auth-panel">
+      <div class="theme-toggle-slot"></div>
+      <div class="auth-card">
+        <a class="brand" href="login.html" data-logo><span class="brand-name">Vibe<span>Hive</span></span></a>
+        <!-- Phones only: mini animated header (flying bee, vibe bubbles, vibe ticker) -->
+        <div class="mobile-hero" data-mobile-hero aria-hidden="true"></div>
+        <h2>Welcome back 👋</h2>
+        <p class="sub" id="login-sub">Log in to see what's buzzing in your hive.</p>
+
+        <!-- Accounts that already logged in on this device (filled by auth.js) -->
+        <div class="saved-accounts" id="saved-accounts" hidden></div>
+
+        <div class="form-alert" id="form-alert" role="alert"></div>
+
+        <form id="login-form" novalidate>
+          <div class="field">
+            <label for="identifier">Username or email</label>
+            <input class="input" id="identifier" name="identifier" autocomplete="username" placeholder="yourname or you@example.com" required>
+            <p class="field-error" data-error-for="identifier"></p>
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <div class="input-wrap">
+              <input class="input" id="password" name="password" type="password" autocomplete="current-password" placeholder="Your password" required>
+              <button class="btn-icon" type="button" data-toggle-password aria-label="Show password"></button>
+            </div>
+            <p class="field-error" data-error-for="password"></p>
+          </div>
+          <button class="btn btn-primary btn-lg btn-block" type="submit">Log in</button>
+        </form>
+
+        <p class="auth-switch">New to VibeHive? <a href="register.html">Create an account</a></p>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/config.js?v=10"></script>
+  <script src="js/api.js?v=10"></script>
+  <script src="js/app.js?v=10"></script>
+  <script src="js/auth.js?v=10"></script>
+  <script src="js/auth-showcase.js?v=10"></script>
+  <script src="js/pwa.js?v=10"></script>
+</body>
+</html>

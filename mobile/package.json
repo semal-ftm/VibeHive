@@ -1,0 +1,19 @@
+{
+  "name": "vibehive-mobile",
+  "version": "1.0.0",
+  "private": true,
+  "description": "VibeHive Android app – the ../frontend folder wrapped with Capacitor",
+  "scripts": {
+    "copy-web": "node copy-web.js",
+    "sync": "node copy-web.js && npx cap sync android",
+    "open": "npx cap open android",
+    "build:debug": "node copy-web.js && npx cap sync android && cd android && gradlew.bat assembleDebug"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.2.2",
+    "@capacitor/core": "^6.2.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.2.2"
+  }
+}

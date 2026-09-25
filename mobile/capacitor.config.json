@@ -1,0 +1,11 @@
+{
+  "appId": "com.vibehive.app",
+  "appName": "VibeHive",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#F7F4EE"
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}

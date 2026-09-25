@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Join · VibeHive</title>
+  <meta name="description" content="Create your VibeHive account — Share the vibe. Join the hive.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <!-- Installable app (PWA) -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#F7F4EE" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121016" media="(prefers-color-scheme: dark)">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="VibeHive">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css?v=10">
+  <script src="js/theme-boot.js?v=10"></script>
+</head>
+<body>
+  <div class="auth-page">
+    <section class="auth-brand" aria-hidden="true">
+      <a class="brand" href="login.html" data-logo tabindex="-1"><span class="brand-name">Vibe<span>Hive</span></span></a>
+      <div>
+        <div class="auth-headline">
+          <h1>Your people are<br><em>already buzzing.</em></h1>
+          <p>Create a profile in seconds, share your first vibe and start building your hive.</p>
+        </div>
+        <!-- Animated demo: typing → picking a vibe → posting (js/auth-showcase.js) -->
+        <div class="showcase" data-showcase></div>
+      </div>
+      <div class="auth-points"><span>🔒 Secure accounts</span><span>🌗 Light &amp; dark</span><span>📱 Works everywhere</span></div>
+    </section>
+
+    <section class="auth-panel">
+      <div class="theme-toggle-slot"></div>
+      <div class="auth-card">
+        <a class="brand" href="login.html" data-logo><span class="brand-name">Vibe<span>Hive</span></span></a>
+        <!-- Phones only: mini animated header (flying bee, vibe bubbles, vibe ticker) -->
+        <div class="mobile-hero" data-mobile-hero aria-hidden="true"></div>
+        <h2>Join the hive 🐝</h2>
+        <p class="sub">It's free and takes less than a minute.</p>
+
+        <div class="form-alert" id="form-alert" role="alert"></div>
+
+        <form id="register-form" novalidate>
+          <div class="field-row">
+            <div class="field">
+              <label for="username">Username</label>
+              <input class="input" id="username" name="username" autocomplete="username" placeholder="e.g. ayesha.codes" maxlength="30" required>
+              <p class="field-error" data-error-for="username"></p>
+            </div>
+            <div class="field">
+              <label for="full_name">Full name <span class="text-muted">(optional)</span></label>
+              <input class="input" id="full_name" name="full_name" autocomplete="name" placeholder="Ayesha Siddiqui" maxlength="80">
+              <p class="field-error" data-error-for="full_name"></p>
+            </div>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input class="input" id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+            <p class="field-error" data-error-for="email"></p>
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <div class="input-wrap">
+              <input class="input" id="password" name="password" type="password" autocomplete="new-password" placeholder="At least 8 characters" required>
+              <button class="btn-icon" type="button" data-toggle-password aria-label="Show password"></button>
+            </div>
+            <div class="strength" id="strength" data-level="0" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+            <p class="hint" id="strength-label">Use 8+ characters with a mix of letters, numbers &amp; symbols.</p>
+            <p class="field-error" data-error-for="password"></p>
+          </div>
+          <div class="field">
+            <label for="password_confirm">Confirm password</label>
+            <input class="input" id="password_confirm" name="password_confirm" type="password" autocomplete="new-password" placeholder="Type it again" required>
+            <p class="field-error" data-error-for="password_confirm"></p>
+          </div>
+          <button class="btn btn-primary btn-lg btn-block" type="submit">Create account</button>
+        </form>
+
+        <p class="auth-switch">Already buzzing? <a href="login.html">Log in</a></p>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/config.js?v=10"></script>
+  <script src="js/api.js?v=10"></script>
+  <script src="js/app.js?v=10"></script>
+  <script src="js/auth.js?v=10"></script>
+  <script src="js/auth-showcase.js?v=10"></script>
+  <script src="js/pwa.js?v=10"></script>
+</body>
+</html>

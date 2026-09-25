@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Explore · VibeHive</title>
+  <meta name="description" content="Explore what's buzzing on VibeHive.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <!-- Installable app (PWA) -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#F7F4EE" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121016" media="(prefers-color-scheme: dark)">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="VibeHive">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css?v=10">
+  <script src="js/theme-boot.js?v=10"></script>
+</head>
+<body class="app">
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main" id="main">
+      <section class="explore-hero">
+        <h1>Explore the Hive</h1>
+        <p>Explore what's buzzing — find people, topics and vibes you love.</p>
+        <form class="search" id="explore-search-form" role="search">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input class="input" id="explore-search" type="search" placeholder="Search the hive..." aria-label="Search users by name or username" autocomplete="off">
+        </form>
+      </section>
+
+      <!-- Search results (shown while searching) -->
+      <section class="section hidden" id="search-section">
+        <div class="section-head"><h2>🔍 People in the hive</h2></div>
+        <div class="card list-card" id="search-results"></div>
+      </section>
+
+      <div id="discover">
+        <section class="section" id="matches">
+          <div class="section-head">
+            <div>
+              <h2>🧬 People who share your vibe</h2>
+              <p class="section-sub">Matched by the moods you post — not by who you already know.</p>
+            </div>
+          </div>
+          <div class="people-grid" id="match-grid"></div>
+        </section>
+
+        <section class="section">
+          <div class="section-head"><h2>✨ Browse by vibe</h2></div>
+          <div class="chip-row" id="vibe-chips"></div>
+        </section>
+
+        <section class="section" id="topics-section">
+          <div class="section-head"><h2>📈 Trending topics</h2></div>
+          <div class="topic-grid" id="topics"></div>
+        </section>
+
+        <section class="section" id="creators-section">
+          <div class="section-head"><h2>🐝 Suggested creators</h2></div>
+          <div class="people-grid" id="creators"></div>
+        </section>
+
+        <section class="section">
+          <div class="section-head"><h2>🌱 Fresh faces in the hive</h2></div>
+          <div class="card list-card" id="new-members"></div>
+        </section>
+
+        <section class="section">
+          <div class="section-head"><h2 id="posts-title">🔥 Popular in your hive</h2></div>
+          <div id="filter-banner"></div>
+          <div id="explore-feed"></div>
+        </section>
+      </div>
+    </main>
+
+    <aside class="rightbar" id="rightbar"></aside>
+  </div>
+
+  <script src="js/config.js?v=10"></script>
+  <script src="js/api.js?v=10"></script>
+  <script src="js/app.js?v=10"></script>
+  <script src="js/vibes.js?v=10"></script>
+  <script src="js/posts.js?v=10"></script>
+  <script src="js/explore.js?v=10"></script>
+  <script src="js/pwa.js?v=10"></script>
+</body>
+</html>
