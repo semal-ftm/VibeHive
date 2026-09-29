@@ -26,6 +26,8 @@
   let hasMore = false;
   let signature = "";
   let composerMode = "";  // "open" | "locked"
+  let headerHTML = "";
+  let renderedIds = new Set(); // messages already on screen – only new ones animate in
 
   /* ------------------------------------------------------------ helpers */
   const timeOf = (iso) => new Date(iso).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
@@ -44,13 +46,16 @@
   /* ------------------------------------------------------------ header */
   function renderHeader() {
     const o = conv.other;
-    personEl.href = VH.profileUrl(o);
-    personEl.innerHTML = `
+    const html = `
       ${VH.avatar(o, 42)}
       <span class="meta">
         <span class="name">${VH.esc(VH.displayName(o))}</span>
         <span class="status">${conv.other_typing ? '<span class="typing-text">typing…</span>' : `@${VH.esc(o.username)}`}</span>
       </span>`;
+    if (html === headerHTML) return; // don't rebuild (and re-load the avatar) on every poll
+    headerHTML = html;
+    personEl.href = VH.profileUrl(o);
+    personEl.innerHTML = html;
     document.title = `${VH.displayName(o)} · VibeHive`;
   }
 
@@ -64,7 +69,7 @@
   function bubbleHTML(m, prev) {
     const stacked = prev && prev.is_mine === m.is_mine && new Date(m.created_at) - new Date(prev.created_at) < 5 * 60000;
     return `
-      <div class="msg ${m.is_mine ? "mine" : "theirs"} ${stacked ? "stacked" : ""}" data-id="${m.id}">
+      <div class="msg ${m.is_mine ? "mine" : "theirs"} ${stacked ? "stacked" : ""} ${renderedIds.has(m.id) ? "" : "is-new"}" data-id="${m.id}">
         <div class="bubble ${m.image_url && !m.text ? "photo-only" : ""}">
           ${m.vibe_info ? `<span class="msg-vibe vibe-${m.vibe_info.key}">${m.vibe_info.emoji} ${VH.esc(m.vibe_info.label)}</span>` : ""}
           ${m.image_url ? `<img class="msg-photo" src="${VH.esc(m.image_url)}" alt="Photo" loading="lazy">` : ""}
@@ -93,6 +98,7 @@
         <p>Messages here are private between you two.</p></div>`;
     }
     listEl.innerHTML = html;
+    renderedIds = new Set(messages.map((m) => m.id));
     if (lastMine) {
       const node = VH.qs(`.msg[data-id="${lastMine.id}"]`, listEl);
       node?.insertAdjacentHTML("beforeend", `<span class="seen ${lastMine.is_read ? "is-seen" : ""}">${lastMine.is_read ? "Seen ✓✓" : "Sent ✓"}</span>`);
@@ -101,6 +107,13 @@
     typingEl.hidden = !conv.other_typing;
     if (stick) toBottom(); else scroller.scrollTop = scroller.scrollHeight - fromBottom;
     VH.qsa(".msg-photo", listEl).forEach((img) => img.addEventListener("load", () => { if (stick) toBottom(); }, { once: true }));
+  }
+
+  function showTyping(on) {
+    if (typingEl.hidden === !on) return;
+    const stick = nearBottom();
+    typingEl.hidden = !on;
+    if (stick) toBottom();
   }
 
   /* ------------------------------------------------------------ loading + live updates */
@@ -127,10 +140,11 @@
     // keep older messages already loaded, replace the latest window (catches edits, reactions, deletions)
     messages = [...messages.filter((m) => m.id < firstLatestId), ...latest];
     if (first) hasMore = data.has_more;
-    const next = JSON.stringify([messages, conv.other_typing, conv.can_message, conv.other]);
+    // "typing…" is left out on purpose: it only toggles the dots, it must not rebuild the whole list
+    const next = JSON.stringify([messages, conv.can_message, conv.other]);
     renderHeader();
     renderComposer();
-    if (next === signature) { typingEl.hidden = !conv.other_typing; return; }
+    if (next === signature) { showTyping(conv.other_typing); return; }
     signature = next;
     render({ keepBottom: first });
     if (!first) VH.checkChats?.(); // update the unread badge after reading
@@ -198,8 +212,19 @@
 
     const update = () => {
       send.disabled = !textarea.value.trim() && !photo;
+      // Grow with the text. Count the border (box-sizing: border-box) so the box isn't 3px
+      // short, and keep the old height when it hasn't changed – both made the composer jitter.
+      const prev = textarea.style.height;
       textarea.style.height = "auto";
-      textarea.style.height = `${Math.min(textarea.scrollHeight, 140)}px`;
+      const border = textarea.offsetHeight - textarea.clientHeight;
+      const full = textarea.scrollHeight + border;
+      const h = `${Math.min(full, 140)}px`;
+      textarea.style.height = prev === h ? prev : h;
+      textarea.style.overflowY = full > 140 ? "auto" : "hidden";
+    };
+    const submit = () => {
+      if (typeof form.requestSubmit === "function") form.requestSubmit();
+      else form.dispatchEvent(new Event("submit", { cancelable: true })); // older Safari
     };
 
     async function setPhoto(file) {
@@ -245,15 +270,30 @@
         API.post(`/chats/${id}/typing/`).catch(() => {});
       }
     });
+    // Some phone keyboards (predictive text / IME) finish a word without a normal "input" event,
+    // which left Send greyed out even though there was text in the box
+    ["compositionend", "change", "keyup", "paste", "cut"].forEach((type) => textarea.addEventListener(type, () => setTimeout(update)));
     textarea.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && !e.shiftKey && !matchMedia("(pointer: coarse)").matches) {
+      if (e.key === "Enter" && !e.shiftKey && !e.isComposing && !matchMedia("(pointer: coarse)").matches) {
         e.preventDefault();
-        if (!send.disabled) form.requestSubmit();
+        submit();
       }
+    });
+    // Keep the keyboard open when Send is tapped. Otherwise the text box loses focus, the keyboard
+    // closes, the layout jumps and the tap lands beside the button – so "Send does nothing".
+    send.addEventListener("mousedown", (e) => e.preventDefault());
+    send.addEventListener("touchend", (e) => {
+      if (document.activeElement !== textarea) return; // keyboard already closed – a normal click works
+      const t = e.changedTouches[0];
+      const r = send.getBoundingClientRect();
+      if (t && (t.clientX < r.left || t.clientX > r.right || t.clientY < r.top || t.clientY > r.bottom)) return; // slid off
+      e.preventDefault();
+      if (!send.disabled) submit();
     });
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
+      if (send.classList.contains("sending")) return; // already on its way
       const text = textarea.value.trim();
       if (!text && !photo) return;
       const data = new FormData();
@@ -279,7 +319,7 @@
       } finally {
         send.classList.remove("sending");
         update();
-        textarea.focus();
+        textarea.focus({ preventScroll: true });
       }
     });
     // Laptops: ready to type. Phones: the keyboard only opens when you tap the box.
@@ -389,25 +429,47 @@
   olderEl.addEventListener("click", (e) => { const b = e.target.closest("[data-older]"); if (b) loadOlder(b); });
 
   /* ------------------------------------------------------------ phone layout */
-  const shell = VH.qs("#chat-shell");
+  // Pin the header + chat to the part of the screen above the keyboard.
+  // iOS doesn't shrink the page for the keyboard – it slides the view up instead
+  // (visualViewport.offsetTop). We follow that offset rather than forcing the page back
+  // with scrollTo(0, 0) 250ms later: fighting the browser is what made the chat jump up,
+  // hide the text you were typing, snap back, and shake on every key press.
   const phone = matchMedia("(max-width: 720px)");
-  function fitToScreen() {
+  const vv = window.visualViewport;
+  let fitQueued = false;
+  let lastFit = "";
+  function applyFit() {
+    fitQueued = false;
     const root = document.documentElement.style;
-    if (!phone.matches) { root.removeProperty("--chat-top"); root.removeProperty("--chat-h"); return; }
-    const stick = nearBottom();
+    if (!phone.matches) {
+      ["--chat-top", "--chat-h", "--vv-top"].forEach((p) => root.removeProperty(p));
+      lastFit = "";
+      return;
+    }
+    const offset = vv ? Math.max(0, Math.round(vv.offsetTop)) : 0;
+    const visible = Math.round(vv ? vv.height : window.innerHeight);
     const top = VH.qs(".mobile-top")?.offsetHeight || 0;
-    const visible = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-    root.setProperty("--chat-top", `${top}px`);
+    const key = `${offset}|${visible}|${top}`;
+    if (key === lastFit) return; // nothing changed – leave the layout alone
+    lastFit = key;
+    const stick = nearBottom();
+    root.setProperty("--vv-top", `${offset}px`);
+    root.setProperty("--chat-top", `${offset + top}px`);
     root.setProperty("--chat-h", `${Math.max(240, visible - top)}px`);
-    window.scrollTo(0, 0); // never let the page itself scroll the header away
     if (stick) toBottom();
   }
-  window.visualViewport?.addEventListener("resize", fitToScreen);
-  window.visualViewport?.addEventListener("scroll", () => window.scrollTo(0, 0));
+  const fitToScreen = () => {
+    if (fitQueued) return;
+    fitQueued = true;
+    requestAnimationFrame(applyFit);
+  };
+  vv?.addEventListener("resize", fitToScreen);
+  vv?.addEventListener("scroll", fitToScreen);
   addEventListener("resize", fitToScreen);
   phone.addEventListener?.("change", fitToScreen);
-  document.addEventListener("focusin", () => setTimeout(fitToScreen, 250));
-  fitToScreen();
+  document.addEventListener("focusin", fitToScreen);
+  document.addEventListener("focusout", fitToScreen);
+  applyFit();
 
   /* ------------------------------------------------------------ start */
   if (!id) {

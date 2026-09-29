@@ -10,7 +10,7 @@
    Bump VERSION whenever the frontend changes so phones get the update.
    ========================================================================== */
 
-const VERSION = "vibehive-v10";
+const VERSION = "vibehive-v11";
 const SHELL_CACHE = `${VERSION}-shell`;
 const MEDIA_CACHE = `${VERSION}-media`;
 
